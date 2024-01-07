@@ -1,5 +1,6 @@
 package yohann;
 
+import yohann.enums.MomentOfTheDay;
 import yohann.utils.*;
 
 import org.junit.jupiter.api.DisplayName;
@@ -12,19 +13,22 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class PalindromeTest {
     @ParameterizedTest
-    @ValueSource(strings = {"test", "epsi"})
+    @ValueSource(strings = {"test", "kayak"})
     @DisplayName("La chaîne entrée est renvoyée à l'envers")
     public void testMiroir(String chaine) {
         // ETANT DONNE une chaîne n'étant pas un palindrome
         // QUAND on vérifie si c'est un palindrome
-        String resultat = VerificationPalindromeBuilder.Default().Verifier(chaine);
-
+        VerifierPalindrome stringToVerify = new VerificationPalindromeBuilder(new LangFR())
+                .withMomentOfTheDay(MomentOfTheDay.MATIN)
+                .Build();
         // ALORS on obtient son miroir
+        String result = stringToVerify.verify(chaine);
+
         String inversion = new StringBuilder(chaine)
                 .reverse()
                 .toString();
 
-        assertTrue(resultat.contains(inversion));
+        assertTrue(result.contains(inversion));
     }
 
     @Test

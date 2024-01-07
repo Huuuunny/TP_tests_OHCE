@@ -5,12 +5,12 @@ import yohann.enums.MomentOfTheDay;
 import java.time.LocalTime;
 import java.util.Locale;
 
-public class CheckPalindrome {
+public class VerifierPalindrome {
 
     private final LangueInterface language;
     private final MomentOfTheDay momentOfTheDay;
 
-    public CheckPalindrome(LangueInterface language, MomentOfTheDay momentOfTheDay) {
+    public VerifierPalindrome(LangueInterface language, MomentOfTheDay momentOfTheDay) {
         this.language = language;
         this.momentOfTheDay = momentOfTheDay;
     }

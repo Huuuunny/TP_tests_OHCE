@@ -1,25 +1,25 @@
 package yohann.utils;
 
+import yohann.VerifierPalindrome;
+import yohann.LangueInterface;
+import yohann.enums.MomentOfTheDay;
+
 public class VerificationPalindromeBuilder {
     private LangueInterface langue;
-    private int momentDeLaJournee = 0;
+    private MomentOfTheDay momentOfTheDay;
 
-    public static VerificationPalindrome Default() {
-        return new VerificationPalindromeBuilder().Build();
-    }
-
-    public VerificationPalindrome Build() {
-        return new VerificationPalindrome(this.langue, this.momentDeLaJournee);
-    }
-
-    public VerificationPalindromeBuilder AyantPourLangue(LangueInterface langue){
+    public VerificationPalindromeBuilder(LangueInterface langue) {
         this.langue = langue;
+        this.momentOfTheDay = MomentOfTheDay.MATIN; // Valeur par défaut
+    }
+
+    public VerificationPalindromeBuilder withMomentOfTheDay(MomentOfTheDay momentOfTheDay) {
+        this.momentOfTheDay = momentOfTheDay;
         return this;
     }
 
-    public VerificationPalindromeBuilder AyantPourMomentDeLaJournee(int momentDeLaJournee) {
-        this.momentDeLaJournee = momentDeLaJournee;
-        return this;
+    public VerifierPalindrome Build() {
+        return new VerifierPalindrome(this.langue, this.momentOfTheDay);
     }
 
 }
