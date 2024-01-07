@@ -22,10 +22,6 @@ public class LangueStub implements LangueInterface {
         return "Greeting for " + time;
     }
 
-    @Override
-    public String getGreeting() {
-        return null;
-    }
 
     @Override
     public String getGoodbye(MomentOfTheDay momentOfTheDay) {

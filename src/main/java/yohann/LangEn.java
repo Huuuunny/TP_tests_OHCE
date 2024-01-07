@@ -18,10 +18,6 @@ public class LangEn implements LangueInterface {
         return getGreetingByLanguageAndTime(ENGLISH, time);
     }
 
-    @Override
-    public String getGreeting() {
-        return null;
-    }
 
     @Override
     public String getGoodbye(MomentOfTheDay time) {

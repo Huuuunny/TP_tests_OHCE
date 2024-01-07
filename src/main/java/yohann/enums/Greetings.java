@@ -3,6 +3,8 @@ package yohann.enums;
 import yohann.enums.Langue;
 
 public enum Greetings {
+
+    // Définition des salutations pour le français et l'anglais, adaptées aux moments de la journée
     BONJOUR_MATIN_FR("Bonjour, matin !"),
     BONJOUR_APRES_MIDI_FR("Bonjour, après-midi !"),
     BONSOIR_SOIREE_FR("Bonsoir, soirée !"),
@@ -34,10 +36,22 @@ public enum Greetings {
         this.greeting = greeting;
     }
 
+    /**
+     * Obtient la salutation correspondante à l'enum.
+     *
+     * @return La salutation définie pour l'enum.
+     */
     public String getGreeting() {
         return greeting;
     }
 
+    /**
+     * Renvoie une salutation adaptée au langage et au moment de la journée.
+     *
+     * @param language La langue utilisée (français ou anglais).
+     * @param time Le moment de la journée (matin, après-midi, soirée, nuit).
+     * @return La salutation correspondante.
+     */
     public static String getGreetingByLanguageAndTime(Langue language, MomentOfTheDay time) {
         if (language == Langue.FRENCH) {
             switch (time) {
@@ -65,6 +79,13 @@ public enum Greetings {
         return "Hello";
     }
 
+    /**
+     * Renvoie une formule d'adieu adaptée au langage et au moment de la journée.
+     *
+     * @param language La langue utilisée (français ou anglais).
+     * @param time Le moment de la journée.
+     * @return La formule d'adieu correspondante.
+     */
     public static String getGoodByeByLanguageAndTime(Langue language, MomentOfTheDay time) {
         if (language == Langue.FRENCH) {
             switch (time) {
@@ -92,12 +113,24 @@ public enum Greetings {
         return "Goodbye";
     }
 
+    /**
+     * Renvoie une formule de félicitations adaptée au langage.
+     *
+     * @param language La langue utilisée (français ou anglais).
+     * @return La formule de félicitations.
+     */
     public static String getCongratsByLanguageAndTime(Langue language) {
         return (language == Langue.FRENCH) ?
                 Greetings.FELICITATIONS_FR.getGreeting() :
                 Greetings.FELICITATIONS_EN.getGreeting();
     }
 
+    /**
+     * Renvoie une confirmation de palindrome adaptée au langage.
+     *
+     * @param language La langue utilisée (français ou anglais).
+     * @return La confirmation de palindrome.
+     */
     public static String getConfirmPalindrom(Langue language) {
         return (language == Langue.FRENCH) ?
                 Greetings.BIEN_DIT_FR.getGreeting() :

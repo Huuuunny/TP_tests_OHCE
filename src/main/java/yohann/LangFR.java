@@ -5,37 +5,34 @@ import yohann.enums.MomentOfTheDay;
 
 import static yohann.enums.Greetings.*;
 import static yohann.enums.Langue.ENGLISH;
+import static yohann.enums.Langue.FRENCH;
 
 public class LangFR implements LangueInterface {
 
     @Override
     public String getCongrats() {
-        return getCongratsByLanguageAndTime(ENGLISH);
+        return getCongratsByLanguageAndTime(FRENCH);
     }
 
     @Override
     public String getGreeting(MomentOfTheDay time) {
-        return getGreetingByLanguageAndTime(ENGLISH, time);
+        return getGreetingByLanguageAndTime(FRENCH, time);
     }
 
-    @Override
-    public String getGreeting() {
-        return null;
-    }
 
     @Override
     public String getGoodbye(MomentOfTheDay time) {
-        return getGoodByeByLanguageAndTime(ENGLISH, time);
+        return getGoodByeByLanguageAndTime(FRENCH, time);
     }
 
     @Override
     public String getWellSaid() {
-        return getConfirmPalindrom(ENGLISH);
+        return getConfirmPalindrom(FRENCH);
     }
 
     @Override
     public Langue getLanguageEnum() {
-        return Langue.ENGLISH;
+        return Langue.FRENCH;
     }
 
     @Override
