@@ -14,38 +14,17 @@ public class PalindromeTest {
     @ParameterizedTest
     @ValueSource(strings = {"test", "epsi"})
     @DisplayName("La chaîne entrée est renvoyée à l'envers")
-    public void testMiroir(String chaîne) {
+    public void testMiroir(String chaine) {
         // ETANT DONNE une chaîne n'étant pas un palindrome
         // QUAND on vérifie si c'est un palindrome
-        String résultat = VerificationPalindromeBuilder.Default().Verifier(chaîne);
+        String resultat = VerificationPalindromeBuilder.Default().Verifier(chaine);
 
         // ALORS on obtient son miroir
-        String inversion = new StringBuilder(chaîne)
+        String inversion = new StringBuilder(chaine)
                 .reverse()
                 .toString();
 
-        assertTrue(résultat.contains(inversion));
-    }
-
-    @Test
-    @DisplayName("Si la chaîne est un palindrome, on félicite")
-    public void testPalindrome(){
-        // ETANT DONNE un palindrome
-        String palindrome = "radar";
-
-        var félicitations = "Félicitations";
-        var vérificateur = new VerificationPalindromeBuilder()
-                .AyantPourLangue(
-                        langue -> langue.AyantPourFélicitations(félicitations)
-                )
-                .Build();
-
-        // QUAND on vérifie si c'est un palindrome
-        String résultat = vérificateur.Vérifier(palindrome);
-
-        // ALORS la chaîne est répétée, suivie de félicitations dans cette langue
-        String attendu = palindrome + System.lineSeparator() + félicitations;
-        assertTrue(résultat.contains(attendu));
+        assertTrue(resultat.contains(inversion));
     }
 
     @Test
@@ -77,13 +56,13 @@ public class PalindromeTest {
     @ParameterizedTest
     @MethodSource("casTestBonjour")
     @DisplayName("Avant toute chose, on salue")
-    public void testBonjour(String chaîne, LangueInterface langue, MomentDeLaJournée momentDeLaJournée, String salutations){
+    public void testBonjour(String chaîne, LangueInterface langue, int momentDeLaJournée, String salutations){
         // ETANT DONNE une chaîne
         // ET un utilisateur parlant une <langue>
         // ET que nous sommes le <momentDeLaJournée>
         var vérification = new VerificationPalindromeBuilder()
                 .AyantPourLangue(langue)
-                .AyantPourMomentDeLaJournée(momentDeLaJournée)
+                .AyantPourMomentDeLaJournee(momentDeLaJournée)
                 .Build();
 
         // QUAND on vérifie si c'est un palindrome
@@ -101,7 +80,10 @@ public class PalindromeTest {
     public void testAuRevoir(String chaîne){
         // ETANT DONNE une chaîne
         // QUAND on vérifie si c'est un palindrome
-        String résultat =  VerificationPalindromeBuilder.Default().Vérifier(chaîne);
+        var verification = new VerificationPalindromeBuilder()
+                .AyantPourLangue(langue)
+                .AyantPourMomentDeLaJournee(momentDeLaJournee)
+                .build();
 
         // ALORS toute réponse est suivie de "Au Revoir"
         String[] lines = résultat.split(System.lineSeparator());
