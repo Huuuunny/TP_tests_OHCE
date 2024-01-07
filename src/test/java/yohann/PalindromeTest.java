@@ -1,5 +1,8 @@
 package yohann;
 
+import org.junit.jupiter.params.provider.Arguments;
+import yohann.enums.Greetings;
+import yohann.enums.Langue;
 import yohann.enums.MomentOfTheDay;
 import yohann.utils.*;
 
@@ -8,6 +11,8 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.junit.jupiter.params.provider.ValueSource;
+
+import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -32,66 +37,75 @@ public class PalindromeTest {
     }
 
     @Test
-    @DisplayName("Si pas un palindrome, on ne félicite pas")
-    public void testSansPalindromePasDeFélicitations(){
-        // ETANT DONNE un non-palindrome
-        String palindrome = "test";
-        var langueSpy = new LangueSpy();
-        var vérificateur = new VerificationPalindromeBuilder()
-                .AyantPourLangue(langueSpy)
+    public void testFrenchPalindrome() {
+        VerifierPalindrome stringToVerify = new VerificationPalindromeBuilder(new LangFR())
+                .withMomentOfTheDay(MomentOfTheDay.MATIN)
                 .Build();
+        String palindrome = "radar";
+        String result = stringToVerify.verify(palindrome);
 
-        // QUAND on vérifie si c'est un palindrome
-        vérificateur.Vérifier(palindrome);
+        String expectedStart = Greetings.getGreetingByLanguageAndTime(Langue.FRENCH, MomentOfTheDay.MATIN);
+        String confirm = Greetings.getConfirmPalindrom(Langue.FRENCH);
+        String congrats = Greetings.getCongratsByLanguageAndTime(Langue.FRENCH);
+        String expectedEnd = Greetings.getGoodByeByLanguageAndTime(Langue.FRENCH, MomentOfTheDay.MATIN);
 
-        // ALORS le résultat ne comporte pas de félicitations
-        assertFalse(langueSpy.FéliciterAÉtéInvoqué());
+
+        assertTrue(result.startsWith(expectedStart));
+        assertTrue(result.contains(palindrome));
+        assertTrue(result.contains(confirm));
+        assertTrue(result.contains(congrats));
+        assertTrue(result.endsWith(expectedEnd));
     }
 
-    static Stream<Arguments> casTestBonjour() {
+    static Stream<Arguments> fournirCasPourSalutations() {
         return Stream.of(
-                Arguments.of("test", new LangueFrançaise(), MomentDeLaJournée.Matin, Expressions.Bonjour),
-                Arguments.of("radar", new LangueFrançaise(), MomentDeLaJournée.Matin, Expressions.Bonjour),
-                Arguments.of("test", new LangueAnglaise(), MomentDeLaJournée.Matin, Expressions.Hello),
-                Arguments.of("radar", new LangueAnglaise(), MomentDeLaJournée.Matin, Expressions.Hello)
+                Arguments.of("radar", new LangFR(), MomentOfTheDay.MATIN),
+                Arguments.of("kayak", new LangFR(), MomentOfTheDay.APRES_MIDI),
+                Arguments.of("non", new LangFR(), MomentOfTheDay.SOIREE),
+                Arguments.of("non", new LangFR(), MomentOfTheDay.NUIT),
+                Arguments.of("radar", new LangEn(), MomentOfTheDay.MATIN),
+                Arguments.of("kayak", new LangEn(), MomentOfTheDay.APRES_MIDI),
+                Arguments.of("non", new LangEn(), MomentOfTheDay.SOIREE),
+                Arguments.of("non", new LangEn(), MomentOfTheDay.NUIT)
         );
     }
 
     @ParameterizedTest
-    @MethodSource("casTestBonjour")
-    @DisplayName("Avant toute chose, on salue")
-    public void testBonjour(String chaîne, LangueInterface langue, int momentDeLaJournée, String salutations){
-        // ETANT DONNE une chaîne
-        // ET un utilisateur parlant une <langue>
-        // ET que nous sommes le <momentDeLaJournée>
-        var vérification = new VerificationPalindromeBuilder()
-                .AyantPourLangue(langue)
-                .AyantPourMomentDeLaJournee(momentDeLaJournée)
+    @MethodSource("fournirCasPourSalutations")
+    public void testBonjourAvecBonneLangue(String inputString, LangueInterface language, MomentOfTheDay moment) {
+        VerifierPalindrome checker = new VerificationPalindromeBuilder(language)
+                .withMomentOfTheDay(moment)
                 .Build();
+        String result = checker.verify(inputString);
 
-        // QUAND on vérifie si c'est un palindrome
-        String résultat =  vérification.Vérifier(chaîne);
+        String expected = Greetings.getGreetingByLanguageAndTime(language.getLanguageEnum(), moment);
 
-        // ALORS toute réponse est précédée de <salutations>
-        // dans cette <langue> à ce moment de la journée
-        String[] lines = résultat.split(System.lineSeparator());
-        assertEquals(salutations, lines[0]);
+        assertTrue(result.startsWith(expected));
+    }
+
+    static Stream<Arguments> fournirCasPourAuRevoir() {
+        return Stream.of(
+                Arguments.of("radar", new LangFR(), MomentOfTheDay.MATIN),
+                Arguments.of("non", new LangFR(), MomentOfTheDay.APRES_MIDI),
+                Arguments.of("anna", new LangFR(), MomentOfTheDay.SOIREE),
+                Arguments.of("anna", new LangFR(), MomentOfTheDay.NUIT),
+                Arguments.of("radar", new LangEn(), MomentOfTheDay.MATIN),
+                Arguments.of("non", new LangEn(), MomentOfTheDay.APRES_MIDI),
+                Arguments.of("anna", new LangEn(), MomentOfTheDay.SOIREE),
+                Arguments.of("anna", new LangEn(), MomentOfTheDay.NUIT)
+        );
     }
 
     @ParameterizedTest
-    @ValueSource(strings = {"test", "radar"})
-    @DisplayName("Après avoir répondu, on s'acquitte")
-    public void testAuRevoir(String chaîne){
-        // ETANT DONNE une chaîne
-        // QUAND on vérifie si c'est un palindrome
-        var verification = new VerificationPalindromeBuilder()
-                .AyantPourLangue(langue)
-                .AyantPourMomentDeLaJournee(momentDeLaJournee)
-                .build();
+    @MethodSource("fournirCasPourAuRevoir")
+    public void testAuRevoirAvecBonneLangue(String inputString, LangueInterface language, MomentOfTheDay moment) {
+        VerifierPalindrome checker = new VerificationPalindromeBuilder(language)
+                .withMomentOfTheDay(moment)
+                .Build();
+        String result = checker.verify(inputString);
 
-        // ALORS toute réponse est suivie de "Au Revoir"
-        String[] lines = résultat.split(System.lineSeparator());
-        String lastLine = lines[lines.length - 1];
-        assertEquals(Expressions.AuRevoir, lastLine);
+        String expected = Greetings.getGoodByeByLanguageAndTime(language.getLanguageEnum(), moment);
+
+        assertTrue(result.endsWith(expected));
     }
 }
